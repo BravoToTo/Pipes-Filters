@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using CompAndDel;
+using CompAndDel.Filters;
 
 
 namespace CompAndDel.Pipes
@@ -31,8 +31,15 @@ namespace CompAndDel.Pipes
         /// <param name="picture">imagen a filtrar y enviar a las siguientes cañerías</param>
         public IPicture Send(IPicture picture)
         {
-            next2Pipe.Send(picture.Clone());
-            return this.nextPipe.Send(picture);
+            FilterCognitive hasFace = new FilterCognitive();
+            if (hasFace.Filter(picture))
+            {
+                return this.nextPipe.Send(picture);
+            }
+            else
+            {
+                return this.next2Pipe.Send(picture);
+            }
         }
     }
 }
