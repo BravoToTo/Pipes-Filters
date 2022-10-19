@@ -11,14 +11,17 @@ namespace CompAndDel
         {
             PictureProvider provider = new PictureProvider();
             IPicture picture = provider.GetPicture(@"luke.jpg");
-            FilterStoreImage SaveFilter = new FilterStoreImage();
+            // FilterStoreImage SaveFilter = new FilterStoreImage();
 
             PipeNull ReturnPipe = new PipeNull();
-            PipeSerial pipe2 = new PipeSerial(new FilterNegative(), ReturnPipe);
-            PipeSerial SavePipe1 = new PipeSerial(SaveFilter, pipe2);
-            PipeSerial pipe1 = new PipeSerial(new FilterGreyscale(), SavePipe1);
+            // PipeSerial pipe2 = new PipeSerial(new FilterNegative(), ReturnPipe);
+            // PipeSerial SavePipe1 = new PipeSerial(SaveFilter, pipe2);
+            // PipeSerial pipe1 = new PipeSerial(new FilterGreyscale(), SavePipe1);
+            PipeSerial pipe3 = new PipeSerial(new FilterNegative(), ReturnPipe);
+            PipeSerial pipe2 = new PipeSerial(new FilterGreyscale(), ReturnPipe);
+            PipeFork ConditionalPipe = new PipeFork(pipe2, pipe3);
 
-            picture = pipe1.Send(picture);
+            picture = ConditionalPipe.Send(picture);
             provider.SavePicture(picture, "Final.jpg");
 
             // var twitter = new TwitterImage();
