@@ -8,6 +8,7 @@ namespace CompAndDel.Filters
     /// </remarks>
     public class FilterStoreImage : IFilter
     {
+        private int iteration = 1;
         /// Un filtro que retorna el negativo de la imagen recibida.
         /// </summary>
         /// <param name="image">La imagen a la cual se le va a aplicar el filtro.</param>
@@ -17,7 +18,8 @@ namespace CompAndDel.Filters
             IPicture result = image.Clone();
 
             PictureProvider p = new PictureProvider();
-            p.SavePicture(result, @"PathToNewImage.jpg");
+            p.SavePicture(result, $"Step{this.iteration}.jpg");
+            this.iteration++;
 
             return result;
         }

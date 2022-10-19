@@ -10,15 +10,15 @@ namespace CompAndDel
         {
             PictureProvider provider = new PictureProvider();
             IPicture picture = provider.GetPicture(@"beer.jpg");
+            FilterStoreImage SaveFilter = new FilterStoreImage();
 
             PipeNull ReturnPipe = new PipeNull();
-
             PipeSerial pipe2 = new PipeSerial(new FilterNegative(), ReturnPipe);
-            // PipeFork Fork1 = new PipeFork(pipe2, ReturnPipe);
-            PipeSerial pipe1 = new PipeSerial(new FilterGreyscale(), pipe2);
+            PipeSerial SavePipe1 = new PipeSerial(SaveFilter, pipe2);
+            PipeSerial pipe1 = new PipeSerial(new FilterGreyscale(), SavePipe1);
 
             picture = pipe1.Send(picture);
-            provider.SavePicture(picture, @"Beer_Filtered.jpg");
+            provider.SavePicture(picture, "Beer_Filtered.jpg");
         }
     }
 }
